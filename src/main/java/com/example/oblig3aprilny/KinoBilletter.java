@@ -1,5 +1,7 @@
 package com.example.oblig3aprilny;
 
+
+// Plain old java object for the tickets, included with an id (invisible for client) that renews automatically:
 public class KinoBilletter {
     private int id;
     private String film;
@@ -82,17 +84,4 @@ public class KinoBilletter {
 
 }
 
-/*
 
-CREATE TABLE KinoBilletter
-(
-    id        INTEGER auto_increment not null,
-    film      VARCHAR(255) not null,
-    antall    INTEGER not null,
-    fornavn   VARCHAR(255) not null,
-    etternavn VARCHAR(255) not null,
-    epost     VARCHAR(255) not null,
-    telefonnr VARCHAR(255) not null
-        PRIMARY KEY (id)
-);
- */

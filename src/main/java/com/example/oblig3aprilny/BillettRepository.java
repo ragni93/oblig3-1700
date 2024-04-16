@@ -1,25 +1,23 @@
 package com.example.oblig3aprilny;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-//I repositoryet skal vi koble til databasen
+
+//The repository is for connecting to the database
 @Repository
 public class BillettRepository {
 
-    //Knytter til databasen ved å opprette et objekt kalt db av typen JdbcTemplate
+    // Connecting to the database by making a private "db" of the type JdbcTemplate
     @Autowired
     private JdbcTemplate db;
 
 
-
-
-    //Det kommer en billett inn i denne metoden, som skal lagres i databasen
-    //Spørsmålstegnene i spørringen vil bli fylt inn  i linjen under, der parameterne taes inn
+    //This method takes in a ticket, and saves it to the databse
+    // the questionmarks will be added with value in the line below
     public void lagreBillett(KinoBilletter innbillett) {
         String sql = "INSERT INTO tabell (film,antall,fornavn,etternavn,telefonnr,epost) VALUES(?,?,?,?,?,?)";
         db.update(sql, innbillett.getFilm(), innbillett.getAntall(), innbillett.getFornavn(), innbillett.getEtternavn(),
@@ -27,13 +25,13 @@ public class BillettRepository {
     }
 
 
-    // Her skal alle billetter vises, i en liste, vi oppretter en ny liste her:
+    // This is where all the tickets will show, and is making a new array called alleBilletter
     public List<KinoBilletter> visBilletter(){
         String sql = "SELECT * FROM tabell order by etternavn"; //tabellen i schema
-        List<KinoBilletter> alleBilletter = db.query(sql,new BeanPropertyRowMapper(KinoBilletter.class)); //ny liste!
-        return alleBilletter; //returnerer den nye listen med alle billetter
+        List<KinoBilletter> alleBilletter = db.query(sql,new BeanPropertyRowMapper(KinoBilletter.class)); //new list
+        return alleBilletter; //returns the new array with all the tickets
     }
-
+    //deleting all the tickets for the database table
     public void slettAlleBilletter(){
         String sql = "DELETE FROM tabell";
         db.update(sql);

@@ -1,7 +1,7 @@
+
 $(function(){
-    velgFilm();
+    velgFilm(); // The methods below for showing all available movies are running right away when loading the page
 });
-//får feilmelding fra consollen..
 
 function velgFilm(){
     $.get("/hentFilmer", function(data){
@@ -23,16 +23,8 @@ function formaterFilmer(data){
 
 
 
-
-//Plasserer arrayet <div>-tagg i index.html der arrayet med billettene blir presentert
-// document.getElementById("visAlleBilletter").innerHTML=ut;
-//}
-
-
-
+// A validation-error boolean to get the if-sentences right, and for the error-messages to disapear when fixed
 function bestill() {
-    // valideringsfeil-boolean for å få if-setningene riktig og at feilmeldinger skal slettes
-    // når man fortsetter å fylle ut
     let valideringsfeil = false;
     const billetter = {
         film: $("#valgtFilm").val(),
@@ -45,8 +37,7 @@ function bestill() {
 
 
 
-    // valideringsjekk med if-setninger. Booleanen nederst i hver hindrer billettene å registreres
-    // om inputen ikke er gyldig
+    // Validation-check for each input-field
 
     if (billetter.film === "Velg") {
         $("#feilFilm").html("Feil, velg en film.");
@@ -77,14 +68,14 @@ function bestill() {
         valideringsfeil = true;
     }
 
-    // Flytter opbjektet inn i serveren!
+    // Lets move the object into the server!
     if (!valideringsfeil) {
         $.post("/lagre", billetter, function () {
             console.log("Sendte objekt til tjener. ", billetter);
             visBilletter();
         });
 
-        // Tømmer skrivefeltene når billetene vises under
+        //Empty all input-fields when ticket is ordered and on display
         document.getElementById("valgtFilm").value = "";
         document.getElementById("antall").value = "";
         document.getElementById("fornavn").value = "";
@@ -95,14 +86,14 @@ function bestill() {
 }
 
 
-// Bestill-funksjonen avsluttes med at VisBilletter-funksjonen kjøres
+//in the end of the Bestill-function, the visBilletter-function starts
 function visBilletter() {
     $.get("/vis", function(data) {
         formaterData(data);
     })
 }
 
-
+//Formats all the information about tickets, for display on client-side
 function formaterData(data) {
     let ut = "<table class='table table-striped table-bordered' ><tr>" + "<th>Film</th><th>Antall billetter</th><th>Fornavn</th><th>Etternavn</th><th>Telefonnr</th><th>Epost</th>" + "</tr>";
     for (let p of data) {
@@ -113,7 +104,7 @@ function formaterData(data) {
     $("#visAlleBilletter").html(ut);
 
 
-    // Tømmer feilmeldinger når de er blitt rettet opp i
+    // Removing error-messages when fixed by user
     $("#feilFilm").html("");
     $("#feilAntall").html("");
     $("#feilFornavn").html("");
@@ -125,16 +116,13 @@ function formaterData(data) {
 
 
 
-
-
-// funksjon for å velge antall
+//Function to choose amount of tickets
 function antall(){
     document.getElementById("antall").value;
 }
 
 
-
-// funksjon for å slette hele arrayet fra serveren, med en alert-melding fulgt av en if-setning som sletter
+//Function to delete tickets, starting with an alert-message with a warning for the user
 function slettBilletter(){
     const ok=confirm("OBS! Alle billettene vil slettes. Er du sikker?");
     if(ok) {
